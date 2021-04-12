@@ -6,6 +6,7 @@ class kfIterator:
         self.kf_type = KF.kf_type
         if KF.kf_type == "colored":
             self.CKF = KF.ckf
+            self.namesMap =  self.CKF.names_map()
         self.it = KF.kf.begin()
         self.end = KF.kf.end()
 
@@ -18,7 +19,8 @@ class kfIterator:
 
             if self.kf_type == "colored":
                 kmer_sources = self.CKF.getKmerSourceFromColor(kmer_count)
-                kmer = (kmer_str, kmer_sources)
+                kmer_sources = map(self.namesMap.get, kmer_sources)
+                kmer = (kmer_str, list(kmer_sources))
             else:
                 kmer = (kmer_str, kmer_count)
             
